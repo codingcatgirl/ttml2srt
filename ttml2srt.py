@@ -140,7 +140,7 @@ for timestamp, content in rendered:
     last_text = content
 
 # output srt
-rendered_grouped.append((rendered_grouped[-1][0]+timedelta(hours=24)))
+rendered_grouped.append((rendered_grouped[-1][0]+timedelta(hours=24), ''))
 
 def format_timestamp(timestamp: timedelta):
     return ('%02d:%02d:%02.3f' % (timestamp.total_seconds()//3600,
