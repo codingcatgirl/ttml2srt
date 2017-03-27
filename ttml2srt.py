@@ -98,7 +98,7 @@ def render_subtitles(elem, timestamp, parent_style={}):
 
     if timestamp < elem.attrib['{abs}begin']:
         return ''
-    if elem.attrib['{abs}end'] and timestamp >= elem.attrib['{abs}end']:
+    if elem.attrib['{abs}end'] is not None and timestamp >= elem.attrib['{abs}end']:
         return ''
 
     result = ''
