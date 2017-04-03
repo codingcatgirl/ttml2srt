@@ -21,6 +21,10 @@ for elem in root.findall('./head/styling/style'):
         color = elem.attrib['color']
         if color not in ('#FFFFFF', '#000000'):
             style['color'] = color
+    if 'fontStyle' in elem.attrib:
+        fontstyle = elem.attrib['fontStyle']
+        if fontstyle in ('italic', ):
+            style['fontstyle'] = fontstyle
     styles[elem.attrib['id']] = style
 
 body = root.find('./body')
@@ -110,6 +114,9 @@ def render_subtitles(elem, timestamp, parent_style={}):
     if 'color' in style:
         result += '<font color="%s">' % style['color']
 
+    if style.get('fontstyle') == 'italic':
+        result += '<i>'
+
     if elem.text:
         result += elem.text.strip()
     if len(elem):
@@ -120,6 +127,9 @@ def render_subtitles(elem, timestamp, parent_style={}):
 
     if 'color' in style:
         result += '</font>'
+
+    if style.get('fontstyle') == 'italic':
+        result += '</i>'
 
     if elem.tag in ('div', 'p', 'br'):
         result += '\n'
