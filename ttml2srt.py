@@ -110,11 +110,13 @@ def render_subtitles(elem, timestamp, parent_style={}):
     if 'color' in style:
         result += '<font color="%s">' % style['color']
 
+    if elem.text:
+        result += elem.text.strip()
     if len(elem):
         for child in elem:
             result += render_subtitles(child, timestamp)
-    elif elem.text:
-        result += elem.text
+            if child.tail:
+                result += child.tail.strip()
 
     if 'color' in style:
         result += '</font>'
