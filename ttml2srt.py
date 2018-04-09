@@ -137,6 +137,10 @@ def render_subtitles(elem, timestamp, parent_style={}):
 
     result += trailing_whitespaces
 
+    result = re.sub(r'<font color="(?P<color1>[^"]+)"><font color="(?P<color2>[^"]+)">(?P<text>[^<]+)</font></font>',
+                    r'<font color="\g<color2>">\g<text></font>',
+                    result)
+
     if elem.tag in ('div', 'p', 'br'):
         result += '\n'
 
