@@ -141,6 +141,8 @@ def render_subtitles(elem, timestamp, parent_style={}):
                     r'<font color="\g<color2>">\g<text></font>',
                     result)
 
+    result = re.sub(r'<font color="([^"]+)"></font>', '', result)
+
     if elem.tag in ('div', 'p', 'br'):
         result += '\n'
 
