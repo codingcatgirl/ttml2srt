@@ -155,7 +155,7 @@ for timestamp, content in rendered:
 rendered_grouped.append((rendered_grouped[-1][0]+timedelta(hours=24), ''))
 
 def format_timestamp(timestamp: timedelta):
-    return ('%02d:%02d:%02.3f' % (timestamp.total_seconds()//3600,
+    return ('%02d:%02d:%06.3f' % (timestamp.total_seconds()//3600,
                                   timestamp.total_seconds()//60%60,
                                   timestamp.total_seconds()%60)).replace('.', ',')
 
