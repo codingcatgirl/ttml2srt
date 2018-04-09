@@ -125,11 +125,17 @@ def render_subtitles(elem, timestamp, parent_style={}):
             if child.tail:
                 result += child.tail.strip()
 
+    result_stripped = result.rstrip()
+    trailing_whitespaces = result[len(result_stripped):]
+    result = result_stripped
+
     if 'color' in style:
         result += '</font>'
 
     if style.get('fontstyle') == 'italic':
         result += '</i>'
+
+    result += trailing_whitespaces
 
     if elem.tag in ('div', 'p', 'br'):
         result += '\n'
