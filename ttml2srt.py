@@ -114,6 +114,9 @@ def render_subtitles(elem, timestamp, parent_style={}):
     if 'color' in elem.attrib:
         style['color'] = elem.attrib['color']
 
+    if 'fontStyle' in elem.attrib:
+        style['fontstyle'] = elem.attrib['fontStyle']
+
     if 'color' in style:
         result += '<font color="%s">' % style['color']
 
