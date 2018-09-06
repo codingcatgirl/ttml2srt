@@ -124,14 +124,15 @@ def render_subtitles(elem, timestamp, parent_style={}):
         result += '<i>'
 
     if elem.text:
-        result += elem.text.strip()
+        #result += elem.text.strip()
+        result += re.sub(r'\s+$', ' ', re.sub(r'^\s+', ' ', elem.text))
     if len(elem):
         for child in elem:
             result += render_subtitles(child, timestamp)
             if child.tail:
-                result += child.tail.strip()
+                result += re.sub(r'\s+$', ' ', re.sub(r'^\s+', ' ', child.tail))
 
-    result_stripped = result.rstrip()
+    result_stripped = result #.rstrip()
     trailing_whitespaces = result[len(result_stripped):]
     result = result_stripped
 
@@ -143,11 +144,18 @@ def render_subtitles(elem, timestamp, parent_style={}):
 
     result += trailing_whitespaces
 
-    result = re.sub(r'<font color="(?P<color1>[^"]+)"><font color="(?P<color2>[^"]+)">(?P<text>[^<]+)</font></font>',
-                    r'<font color="\g<color2>">\g<text></font>',
+    result = re.sub(r'(?P<all>(\s|^)<(font color="([^"]+)"|i)>) +', '\g<all>', result)
+    result = re.sub(r' +(?P<all></(font|i)>(\s|$))', '\g<all>', result)
+    result = re.sub(r'\n\s+', '\n', result)
+    result = re.sub(r'\s+\n', '\n', result)
+
+    result = re.sub(r'<font color="(?P<color1>[^"]+)">(?P<startspaces>\s*)<font color="(?P<color2>[^"]+)">(?P<text>[^<]+)</font>(?P<endspaces>\s*)</font>',
+                    r'\g<startspaces><font color="\g<color2>">\g<text></font>\g<endspaces>',
                     result)
 
-    result = re.sub(r'<font color="([^"]+)"></font>', '', result)
+    result = re.sub(r'\n+(?P<all></(font|i)>)', '\g<all>\n', result)
+
+    result = re.sub(r'<font color="([^"]+)">(?P<spaces>\s*)</font>', '\g<spaces>', result)
 
     if elem.tag in ('div', 'p', 'br'):
         result += '\n'
