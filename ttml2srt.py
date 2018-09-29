@@ -13,6 +13,10 @@ for elem in root.getiterator():
     elem.tag = elem.tag.split('}', 1)[-1]
     elem.attrib = {name.split('}', 1)[-1]: value for name, value in elem.attrib.items()}
 
+tick_rate = root.attrib.get('tickRate', None)
+if tick_rate is not None:
+    tick_rate = int(tick_rate)
+
 # get styles
 styles = {}
 for elem in root.findall('./head/styling/style'):
@@ -46,7 +50,10 @@ def parse_time_expression(expression, default_offset=timedelta(0)):
         elif metric == 'f':
             raise NotImplementedError('Parsing time expressions by frame is not supported!')
         elif metric == 't':
-            raise NotImplementedError('Parsing time expressions by ticks is not supported!')
+            if tick_rate is None:
+                raise NotImplementedError('Time expression contains ticks but tickRate is not specified!')
+            return default_offset + timedelta(seconds=time_value/tick_rate)
+
 
     clock_time = re.match(r'^([0-9]{2,}):([0-9]{2,}):([0-9]{2,}(\.[0-9]+)?)$', expression)
     if clock_time:
