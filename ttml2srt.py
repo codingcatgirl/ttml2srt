@@ -116,7 +116,7 @@ def render_subtitles(elem, timestamp, parent_style={}):
 
     style = parent_style.copy()
     if 'style' in elem.attrib:
-        style.update(styles[elem.attrib['style']])
+        style.update(styles.get(elem.attrib['style'], {}))
 
     if 'color' in elem.attrib:
         style['color'] = elem.attrib['color']
