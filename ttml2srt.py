@@ -9,7 +9,7 @@ tree = ET.parse(filename)
 root = tree.getroot()
 
 # strip namespaces
-for elem in root.getiterator():
+for elem in root.iter():
     elem.tag = elem.tag.split('}', 1)[-1]
     elem.attrib = {name.split('}', 1)[-1]: value for name, value in elem.attrib.items()}
 
